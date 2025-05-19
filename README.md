@@ -5,12 +5,16 @@ This project demonstrates the full rendering workflow—from loading OBJ models,
 
 This project is still a work in progress and more functionalities will be integrated into the project going forward. 
 
-![[new_depth.tga]]
+![Snipaste_2025-05-19_17-20-06](https://github.com/user-attachments/assets/1050457d-7e27-4739-9235-487f0b989023)
 
-![[new_frame.tga]]
+![Snipaste_2025-05-19_17-20-31](https://github.com/user-attachments/assets/d317afd2-59bf-4e91-a69f-845ddde08dfc)
 
 reference: 
+
 https://github.com/ssloy/tinyrenderer
+
 http://games-cn.org/intro-graphics/
+
 https://zhuanlan.zhihu.com/p/66985670
+
 https://zhuanlan.zhihu.com/p/66384929
