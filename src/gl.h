@@ -8,7 +8,6 @@
 
 // interface for shader struct
 //这个是shader的接口，定义了顶点着色器和片段着色器
-//接口名通常以 I 前缀（如 IShader）或 Abstract 标识（非强制但常见）
 struct IShader
 {
 	virtual Vec4f vertex(unsigned nthvert, Vec4f worldCoord, Vec2f uv, Vec3f normal) = 0;
