@@ -458,7 +458,7 @@ void writeFrame(TGAImage &frame, float *zBuffer, Vec3f *colorBuffer, unsigned cn
 }
 
 /**
- * 主函数：程序入口点,main函数是程序的入口点，程序从这里开始执行
+ * 主函数
  * 程序的执行顺序是main函数->PhongShading函数->triangle函数->homogeneousClip函数->singleFaceZClip函数->pushIntersection函数
  */
 int main()
@@ -489,12 +489,9 @@ int main()
 	unsigned cntModel = 2;  // 模型数量
 	Model **modelData = new Model*[cntModel];  // 创建模型数组
 
-	modelData[0] = new Model("C:/Users/25498/Desktop/Rasterizer2/dragon_obj/diablo3pose.obj");  // 这里一定一定要写成绝对路径!!!
-	//而且纹理tga的文件命名要按_diffuse和_nm_tangent以及_spec来命名, 这都是因为model函数里面的规范一定要继承
-
-	modelData[1] = new Model("C:/Users/25498/Desktop/Rasterizer2/obj/floor.obj");  // 加载地板模型
-	//两个模型的文件和文件夹都放在了和.sln解决方案同一个目录下:  C:\Users\25498\Desktop\Rasterizer2
-	//最终输出储存在这个路径:  C:\Users\25498\Desktop\Rasterizer2\Rasterizer2\thisoutput
+	modelData[0] = new Model("输入你存放的路径");  // 这里一定一定要写成绝对路径!!!
+	//而且纹理tga的文件命名要按_diffuse和_nm_tangent以及_spec来命名
+	modelData[1] = new Model("输入你存放的路径");  // 加载地板模型
 
 	std::cerr << std::endl;  // 输出空行
 	
