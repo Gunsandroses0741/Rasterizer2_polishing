@@ -1,50 +1,31 @@
 #pragma once // 防止头文件被重复包含，确保每个源文件只包含一次该头文件
 
-#include <cmath>      // 包含数学函数库，例如 std::sqrt 用于平方根计算
-#include <vector>     // 包含 std::vector 容器
-#include <cassert>    // 包含 assert 宏，用于调试时进行断言检查
-#include <iostream>   // 包含输入输出流库，例如 std::ostream 用于重载 << 操作符
+#include <cmath>      
+#include <vector>     
+#include <cassert>    
+#include <iostream>   
 
-// 前向声明 mat 类模板，因为 vec 类模板中可能会用到它，或者反之
-// DimCols: 列数, DimRows: 行数, T: 数据类型
 template<size_t DimCols, size_t DimRows, typename T> class mat;
 
-// 通用向量类模板 vec
-// DIM: 向量维度, T: 数据类型
 template <size_t DIM, typename T> struct vec {
-	// 默认构造函数，将所有分量初始化为 T 类型的默认值 (通常是0)
+
 	vec() { for (size_t i = DIM; i--; data_[i] = T()); }
-
-	// 重载 [] 操作符，用于访问向量的第 i 个分量 (可修改)
-	T& operator[](const size_t i) { assert(i < DIM); return data_[i]; } // 断言确保索引不越界
-
-	// 重载 [] 操作符 (const版本)，用于访问向量的第 i 个分量 (不可修改)
-	const T& operator[](const size_t i) const { assert(i < DIM); return data_[i]; } // 断言确保索引不越界
+	T& operator[](const size_t i) { assert(i < DIM); return data_[i]; } 
+	const T& operator[](const size_t i) const { assert(i < DIM); return data_[i]; }
 private:
-	T data_[DIM]; // 存储向量数据的私有数组成员
+	T data_[DIM]; 
 };
 
 /////////////////////////////////////////////////////////////////////////////////
 // vec 类模板针对二维向量 (DIM=2) 的特化版本
 
 template <typename T> struct vec<2, T> {
-	vec() : x(T()), y(T()) {} // 默认构造函数，初始化 x 和 y 为 T 类型的默认值
-	vec(T X, T Y) : x(X), y(Y) {} // 带参构造函数，用给定的 X 和 Y 初始化 x 和 y
-
-	// 类型转换构造函数，允许从不同类型的二维向量 U 构造当前类型的二维向量 T
-	// 例如，可以从 vec<2, float> 构造 vec<2, int>
-	// 注意：具体实现通常在 .cpp 文件中通过模板特化给出
+	vec() : x(T()), y(T()) {} 
+	vec(T X, T Y) : x(X), y(Y) {} 
 	template <class U> vec<2, T>(const vec<2, U> &v);
-
-	// 重载 [] 操作符，根据索引 i 返回 x (i=0) 或 y (i=1) (可修改)
 	T& operator[](const size_t i) { assert(i < 2); return i <= 0 ? x : y; }
-
-	// 重载 [] 操作符 (const版本)，根据索引 i 返回 x (i=0) 或 y (i=1) (不可修改)
 	const T& operator[](const size_t i) const { assert(i < 2); return i <= 0 ? x : y; }
-
-	// 计算向量的模长 (L2范数)
 	float norm() { return std::sqrt(x*x + y * y); }
-
 	T x, y; // 二维向量的两个分量
 };
 
@@ -52,53 +33,37 @@ template <typename T> struct vec<2, T> {
 // vec 类模板针对三维向量 (DIM=3) 的特化版本
 
 template <typename T> struct vec<3, T> {
-	vec() : x(T()), y(T()), z(T()) {} // 默认构造函数
-	vec(T X, T Y, T Z) : x(X), y(Y), z(Z) {} // 带参构造函数
-
-	// 类型转换构造函数，允许从不同类型的三维向量 U 构造当前类型的三维向量 T
+	vec() : x(T()), y(T()), z(T()) {} 
+	vec(T X, T Y, T Z) : x(X), y(Y), z(Z) {} 
 	template <class U> vec<3, T>(const vec<3, U> &v);
-
-	// 重载 [] 操作符，根据索引 i 返回 x, y, 或 z (可修改)
 	T& operator[](const size_t i) { assert(i < 3); return i <= 0 ? x : (1 == i ? y : z); }
-
-	// 重载 [] 操作符 (const版本)，根据索引 i 返回 x, y, 或 z (不可修改)
 	const T& operator[](const size_t i) const { assert(i < 3); return i <= 0 ? x : (1 == i ? y : z); }
-
-	// 计算向量的模长
 	float norm() { return std::sqrt(x*x + y * y + z * z); }
 
-	// 将向量归一化 (使其模长为 l，默认为1)
-	// 返回自身的引用，支持链式操作
 	vec<3, T> & normalize(T l = 1) { *this = (*this)*(l / norm()); return *this; }
 
-	T x, y, z; // 三维向量的三个分量
+	T x, y, z; 
 };
 
 /////////////////////////////////////////////////////////////////////////////////
-// vec 类模板针对四维向量 (DIM=4) 的特化版本
+
 
 template <typename T> struct vec<4, T> {
-	vec() : x(T()), y(T()), z(T()), w(T()) {} // 默认构造函数
-	vec(T X, T Y, T Z, T W) : x(X), y(Y), z(Z), w(W) {} // 带参构造函数
-	// 从一个三维向量 v 和一个标量 W 构造四维向量
+	vec() : x(T()), y(T()), z(T()), w(T()) {} 
+	vec(T X, T Y, T Z, T W) : x(X), y(Y), z(Z), w(W) {} 
 	vec(vec<3, T> v, T W) : x(v.x), y(v.y), z(v.z), w(W) {}
 
-	// 类型转换构造函数，允许从不同类型的四维向量 U 构造当前类型的四维向量 T
 	template <class U> vec<4, T>(const vec<4, U> &v);
 
-	// 重载 [] 操作符，根据索引 i 返回 x, y, z, 或 w (可修改)
 	T& operator[](const size_t i) { assert(i < 4); return i <= 0 ? x : (1 == i ? y : (2 == i ? z : w)); }
 
-	// 重载 [] 操作符 (const版本)，根据索引 i 返回 x, y, z, 或 w (不可修改)
 	const T& operator[](const size_t i) const { assert(i < 4); return i <= 0 ? x : (1 == i ? y : (2 == i ? z : w)); }
 
-	// 计算向量的模长
 	float norm() { return std::sqrt(x*x + y * y + z * z + w * w); }
 
-	// 将向量归一化 (使其模长为 l，默认为1)
 	vec<4, T> & normalize(T l = 1) { *this = (*this)*(l / norm()); return *this; }
 
-	T x, y, z, w; // 四维向量的四个分量
+	T x, y, z, w; 
 };
 
 /////////////////////////////////////////////////////////////////////////////////
